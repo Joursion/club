@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Nbut.club</title>
+    
+    <link rel=”icon” href=”/favicon.ico” mce_href=”/favicon.ico” type=”image/x-icon”>
+    <link rel=”shortcut icon” href=”/favicon.ico” mce_href=”/favicon.ico” type=”image/x-icon”>
+    <meta name="keywords" content="宁波工程学院,nbut,宁工二手,社区">
+    <meta name="description" content="nbut.club是一个可以分享的社区">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  </head>
+ <style>
+   .testcol{
+    height: 200px;
+    overflow:hidden;
+   }
+   .cacol{
+     box-sizing: box
+   }
+</style>
+  <body>
+      <div class="root"></div>
+      <script type="text/javascript" src="/bundle.js">
+      
+      </script>
+      <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+      <script>
+        function hasClass(ele, cls) {
+            cls = cls || '';
+            if (cls.replace(/\s/g, '').length == 0) return false; //当cls没有参数时，返回false
+            return new RegExp(' ' + cls + ' ').test(' ' + ele.className + ' ');
+        }
+        function addClass(ele, cls) {
+            if (!hasClass(ele, cls)) {
+                ele.className = ele.className == '' ? cls : ele.className + ' ' + cls;
+            }
+        }
+
+        function removeClass(ele, cls) {
+            if (hasClass(ele, cls)) {
+                var newClass = ' ' + ele.className.replace(/[\t\r\n]/g, '') + ' ';
+                while (newClass.indexOf(' ' + cls + ' ') >= 0) {
+                    newClass = newClass.replace(' ' + cls + ' ', ' ');
+                }
+                ele.className = newClass.replace(/^\s+|\s+$/g, '');
+            }
+        }
+        var _footer = document.querySelector('.footer');
+        window.onload = function(){
+            function footerPosition(){
+               // _footer.removeClass("fixed-bottom");
+                removeClass(_footer, 'fixed-bottom');
+                var contentHeight = document.body.scrollHeight,//网页正文全文高度
+                    winHeight = window.innerHeight;//可视窗口高度，不包括浏览器顶部工具栏
+                if(!(contentHeight > winHeight)){
+                    console.warn('正文小于可视窗口~',contentHeight, winHeight)
+                    //当网页正文高度小于可视窗口高度时，为footer添加类fixed-bottom
+                    //_footer.addClass("fixed-bottom");
+                    addClass(_footer, 'fixed-bottom');
+                } else {
+                    console.log('正文大于可视窗口')
+                    //_footer.removeClass("fixed-bottom");
+                    removeClass(_footer, 'fixed-bottom');
+                }
+            }
+            footerPosition();
+            
+            //$(window).resize(footerPosition);
+        };
+        window.resize = footerPosition;
+      </script>
+      <script>
+        //   window.onload = function() {
+        //       let target_emotions = document.querySelector('.emotions');  
+        //       document.onclick = function (event) {
+        //           //console.log(event.target.class , target_emotions);
+        //           console.log('---', event.target.id, target_emotions);
+        //           if(target_emotions && event.target.id !== 'emotions'){
+        //               target_emotions.style.display = "none"
+        //           }
+        //       }
+        //     // function hide(e){
+        //     //     e.target.style.visibility = 'hidden';
+        //     // }
+        //     // document.addEventListener('click', hide, false);
+        //   }
+      </script>
+  </body>
+</html>

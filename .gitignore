@@ -1,0 +1,16 @@
+
+# modules
+/node_modules/
+/backed/node_modules/
+/fronted/node_modules/
+/backed/tmp/
+
+# config data
+/backed/config/config.js
+
+# map after
+*.map
+
+
+# Optional npm cache directory
+.npm

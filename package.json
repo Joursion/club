@@ -1,0 +1,57 @@
+{
+  "name": "manage",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "redis",
+    "mongodb",
+    "koa",
+    "es6"
+  ],
+  "dependencies": {
+    "antd": "latest",
+    "gulp": "*",
+    "koa": "1.1.2",
+    "koa-bodyparser": "2.0.1",
+    "koa-errorhandler": "0.1.1",
+    "koa-gzip": "0.1.0",
+    "koa-logger": "1.3.0",
+    "koa-router": "*",
+    "koa-send": "*",
+    "koa-static": "*",
+    "react": "^15.0.2",
+    "react-cropper": "^0.9.4",
+    "react-dom": "15.0.2",
+    "react-redux": "4.4.5",
+    "react-router": "^2.0.0",
+    "redux": "^3.3.1",
+    "webpack": "^1.12.14",
+    "marked": "^0.3.6",
+    "highlight": "9.8.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.5.2",
+    "babel-loader": "^6.2.3",
+    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.5.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "css-loader": "^0.25.0",
+    "eslint": "^3.11.0",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-react": "^6.9.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "gulp-clean-css": "*",
+    "gulp-minify": "*",
+    "gulp-react": "^3.1.0",
+    "style-loader": "^0.13.1"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "joursion",
+  "license": "ISC"
+}
