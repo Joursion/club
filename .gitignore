@@ -1,15 +1,18 @@
 
 # modules
 /node_modules/
-/backed/node_modules/
-/fronted/node_modules/
-/backed/tmp/
+/backend/node_modules/
+/client/node_modules/
+/backend/tmp/
 
 # config data
-/backed/config/config.js
+/backend/config/config.js
 
 # map after
 *.map
+
+# other
+bundle.js
 
 
 # Optional npm cache directory
