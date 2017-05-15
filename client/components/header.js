@@ -1,7 +1,7 @@
 "use strict"
-import React, {Component} from 'react';
-import {Link} from 'react-router';
-import {Badge, Menu, Icon, Col} from 'antd';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { Badge, Menu, Icon, Col } from 'antd';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
@@ -12,6 +12,8 @@ import Actions from '../actions/index'
 import Store from '../store/index'
 
 import { handle } from '../tools/index'
+import io from 'socket.io-client';
+import { socketUrl } from '../config/index'
 
 class Header extends Component {
     constructor(props, context) {
@@ -25,22 +27,30 @@ class Header extends Component {
         }
     }
 
-    componentDidMount(){
-        // let token = document.cookie;
-        // if(token) {
-        // }
+    componentDidMount() {
         handle('check', 'get', [], 'josn').then(data => {
-            if(!data.err) {
-                console.log('我的登录状态',data);
+            if (!data.err) {
+                console.log('我的登录状态', data);
                 this.props.actions.setUser(data);
             }
         })
 
         handle('message', 'get', [], 'json').then(data => {
-            if(!data.err) {
+            if (!data.err) {
                 this.props.actions.setMsg(data.num)
             }
         })
+
+        let { user } = this.props
+        if (user && socketUrl) {
+            let socket = io(socketUrl)
+            socket.emit('setUser', { name: user })
+            socket.on(`to${user}`, function (data) {
+                console.log('接受到的消息', data)
+            })
+        }
+
+
         // let cookie = document.cookie;
         // if(cookie && cookie) {
         //     let user = 
@@ -50,12 +60,12 @@ class Header extends Component {
 
     handleClick(e) {
         console.log('click ', e);
-        if(e.key == 'setting:signout') {
+        if (e.key == 'setting:signout') {
             // this.props.history.push('/item');
-            console.log('this.prop---',this.props);
-            handle('signout', 'post', {t:1}, 'json').then(data => {
-                console.log('我退出登录的消息',data);
-                if(!data.err) {
+            console.log('this.prop---', this.props);
+            handle('signout', 'post', { t: 1 }, 'json').then(data => {
+                console.log('我退出登录的消息', data);
+                if (!data.err) {
                     this.props.actions.setUser(undefined);
                 }
             })
@@ -65,23 +75,23 @@ class Header extends Component {
         });
     }
 
-    renderSignedOrNot(messageCount, user){
-        if(typeof user == 'object'){
+    renderSignedOrNot(messageCount, user) {
+        if (typeof user == 'object') {
             let username = user.username;
             return (
                 <Menu onClick={this.handleClick}
-                        selectedKeys={[this.state.current]}
-                        mode="horizontal"
-                    >
+                    selectedKeys={[this.state.current]}
+                    mode="horizontal"
+                >
                     <Menu.Item key="about">
                         <Link to="/about">关于</Link>
                     </Menu.Item>
                     <Menu.Item key="message">
-                    <Link to="/message">
-                        <Badge count={messageCount}>
-                            <span className="head-example">消息</span>
-                        </Badge>
-                    </Link>
+                        <Link to="/message">
+                            <Badge count={messageCount}>
+                                <span className="head-example">消息</span>
+                            </Badge>
+                        </Link>
                     </Menu.Item>
                     <SubMenu title={<span>{username}</span>}>
                         <MenuItemGroup title="发布">
@@ -91,8 +101,15 @@ class Header extends Component {
                         </MenuItemGroup>
                         <MenuItemGroup title="设置">
                             <Menu.Item key="setting:my">
-                            <Link to="/user">我的</Link>
+                                <Link to="/user">我的</Link>
                             </Menu.Item>
+                            {
+                                user.admin ?
+                                    <Menu.Item key="setting:my">
+                                        <Link to="/admin">管理</Link>
+                                    </Menu.Item>
+                                    : null
+                            }
                             <Menu.Item key="setting:signout" >退出登陆</Menu.Item>
                         </MenuItemGroup>
                     </SubMenu>
@@ -101,9 +118,9 @@ class Header extends Component {
         }
         return (
             <Menu onClick={this.handleClick}
-                    selectedKeys={[this.state.current]}
-                    mode="horizontal"
-                >
+                selectedKeys={[this.state.current]}
+                mode="horizontal"
+            >
                 <Menu.Item key="about">
                     <Link to="/about">关于</Link>
                 </Menu.Item>
@@ -120,39 +137,39 @@ class Header extends Component {
             </Menu>
         )
     }
-    
+
     render() {
-        let {user, msg} = this.props;
+        let { user, msg } = this.props;
         //user = user || 'xiaoming';
         //console.log('header-connect', user);
         msg = msg || 0
         return (
             <header className="header">
-            <Col xs={24} sm={24} md={18} lg={18} className="nav-left">
-                 
-                 <Menu onClick={this.handleClick}
-                    selectedKeys={[this.state.current]}
-                    mode="horizontal"
-                 >
-                    <Menu.Item className="logo" key="logo" style={{fontStyle:'oblique', fontSize:'2rem'}}><Link to="/">N</Link></Menu.Item>
-                    <Menu.Item key="item"><Link to="/item">闲置</Link></Menu.Item>
-                    <Menu.Item key="activity">
-                        <Link to="/activity">活动</Link>
-                    </Menu.Item>
-                    <Menu.Item key="ask">
-                        <Link to="/ask">你答</Link>
-                    </Menu.Item>
-                    <Menu.Item key="job">
-                        <Link to="/job">Job</Link>
-                    </Menu.Item>
-                </Menu>
-            </Col>
-            <Col xs={0} sm={0} md={5} lg={4} className="nav-right">
-            {
-                this.renderSignedOrNot(msg, user)
-            }
-            </Col>
-                
+                <Col xs={24} sm={24} md={18} lg={18} className="nav-left">
+
+                    <Menu onClick={this.handleClick}
+                        selectedKeys={[this.state.current]}
+                        mode="horizontal"
+                    >
+                        <Menu.Item className="logo" key="logo" style={{ fontStyle: 'oblique', fontSize: '2rem' }}><Link to="/">N</Link></Menu.Item>
+                        <Menu.Item key="item"><Link to="/item">闲置</Link></Menu.Item>
+                        <Menu.Item key="activity">
+                            <Link to="/activity">活动</Link>
+                        </Menu.Item>
+                        <Menu.Item key="ask">
+                            <Link to="/ask">你答</Link>
+                        </Menu.Item>
+                        <Menu.Item key="job">
+                            <Link to="/job">Job</Link>
+                        </Menu.Item>
+                    </Menu>
+                </Col>
+                <Col xs={0} sm={0} md={5} lg={4} className="nav-right">
+                    {
+                        this.renderSignedOrNot(msg, user)
+                    }
+                </Col>
+
             </header>
         );
     }

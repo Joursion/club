@@ -13,7 +13,6 @@ exports.getJobs = function *() {
         Cache.set('cacheJob', jobs, DAY * 2);
     }
     jobs = JSON.parse(jobs)
-    console.log('jobs--', jobs);
     this.body = {
         data: jobs
     }

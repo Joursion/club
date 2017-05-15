@@ -5,6 +5,8 @@ var logger = require('koa-logger');
 var gzip = require('koa-gzip');
 var st = require('./router/app.js');
 var cors = require('koa-cors');
+var Io = require('socket.io');
+var Socket  = require('./api/message').online;
 //var config = require('./config');
 
 const app = koa();
@@ -28,6 +30,19 @@ st(app, router);
 
 app.use(gzip());
 
+// var io = Io(server);
+// Socket(io)
+
+
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
+
+process.on('caughtException', function(err) {
+    console.error(err)
+})
+
+process.on('uncaughtException', function(err) {
+    console.log(err)
+})
+// module.exports = app.callback();

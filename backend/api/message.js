@@ -7,6 +7,8 @@ const Ask = require('../lib/ask');
 const WEEK = 60*60*24*7
 const DAY = 60*60*24
 
+var onlineUser = []
+
 /**
  * hash
  */
@@ -66,8 +68,10 @@ function *addMessage (user , type, itemType, id) {
     }
     let to = tmpData.creator;
     if(to !== user) {
-        console.log('我添加了消息');
         Cache.sadd(`msg:${to}`, JSON.stringify(msg));
+    }
+    if(onlineUser[to]) {
+        onlineUser[to].emit(`to${to}`, {msg: msg})
     }
 }
 exports.addMessage = addMessage
@@ -88,3 +92,22 @@ function *delMessage() {
 }
 
 exports.delMessage = delMessage
+
+/**在线消息的推送 */
+function online (io) {
+    io.on('connection', function (socket) {
+        console.log('is connection');
+        socket.on
+        socket.on('setUser', function (data) {
+            console.log(data);
+            onlineUser[data.user] = socket;
+        });
+        socket.on('disconnect', function(data){
+            
+            console.log('connection is disconnect!', data);
+            onlineUser[data.user] = null;
+        });
+    });
+
+}
+exports.online = online

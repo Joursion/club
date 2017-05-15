@@ -13,7 +13,7 @@ var client = new redis({
 
 client.on('error', function (err) {
     if (err) {
-        //logger.error('connect to redis error, check your redis config', err);
+        console.error('connect to redis error, check your redis config', err, redisConfig);
         process.exit(1);
     }
 })

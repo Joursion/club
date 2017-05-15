@@ -1,24 +1,21 @@
 'use strict';
 
 const Cache = require('../tools/cache');
+const Tools = require('../tools/index')
 
 /** 验证登录的中间件 */
 exports.userCheck = function* (next) {
     let header = this.request.header;
     if (header && header.cookie) {
         let tmpCookie = header.cookie;
-        let token;// = tmpCookie[1];
-        console.log('valid check', tmpCookie);
-        if (typeof tmpCookie == 'string') {
-            token = tmpCookie.split('=')[1];
-        }
+        let token = Tools.getCookie(tmpCookie, 'user');
         if (token && typeof token == 'string') {
-            let status = yield Cache.get(`token:${token}`);
-            console.log('status===', status);
+            let status = yield Cache.get(`token:${token}`); //根据token判断用户信息
+            console.log('status', status, token)
             if (status) {
                 this.user = status;
                 this.token = token;
-                yield next;
+                yield next;  //通过身份验证，执行next
             } else {
                 this.body = { err: 'invalid request', };
             }
@@ -34,12 +31,8 @@ exports.isSignin = function*(next) {
     let header = this.request.header;
     if (header && header.cookie) {
         let tmpCookie = header.cookie;
-        let token;// = tmpCookie[1];
-        console.log('valid check', tmpCookie);
-        if (typeof tmpCookie == 'string') {
-            token = tmpCookie.split('=')[1];
-        }
-        if (token && typeof token == 'string') {
+        let token = Tools.getCookie(tmpCookie, 'user');
+        if (token) {
             let status = yield Cache.get(`token:${token}`);
             if (status) {
                 this.user = status;
@@ -63,4 +56,5 @@ exports.adminCheck = function* (next) {
         };
     }
 };
+
 

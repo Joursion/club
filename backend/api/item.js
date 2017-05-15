@@ -40,6 +40,7 @@ exports.createItem = function*(){
     console.log('tmpList', tmpList);
     if(tmpList instanceof Array) {
         fileList = tmpList.map((v, index) => {
+            console.log('======', v);
             return `${imgUrl}${v.data.toString()}`
         })
     }

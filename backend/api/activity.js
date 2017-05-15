@@ -89,6 +89,9 @@ exports.getActivityByID = function*(){
     }
 }
 
+/**创建活动
+ * @param body {Object} 
+ */
 exports.createActivity = function*(){
     let body = this.request.body;
     let tmpList = body.fileList;
@@ -104,8 +107,6 @@ exports.createActivity = function*(){
     let data = body;
     data.img = fileList;
     data.creator = this.user;
-
-    console.log('要创建的活动', data);
 
     let status = yield Activity.addActivity(data);
     if(status) {

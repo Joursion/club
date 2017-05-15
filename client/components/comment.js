@@ -5,14 +5,19 @@ import Emotion from './emotion';
 import {handle} from '../tools/index'
 import {Link} from 'react-router'
 
+
+let listener = null;
+
 class Comment extends Component {
     constructor(props, context) {
         super(props, context);
-        this.state = {
-            open: 'none'
-        }
         this.comment_reply = this.comment_reply.bind(this);
         this.emotionBtn = this.emotionBtn.bind(this);
+        this.state = {
+            open: 'none',
+            showImg: 'none',
+            imgUrl: '',
+        }
     }
 
     //回复楼中楼
@@ -61,25 +66,33 @@ class Comment extends Component {
     }
     
     componentDidMount(){
-        document.addEventListener('click', (e) => {
-           // e.target != this.refs.expressionBtn && this.props.isShowExpressions ? this.props.setExpressionHidden():null;
+        listener = document.addEventListener('click', (e) => {
             let emotions = this.refs.emotions;
-            let _this = this;
-            let target = e.target.id
-            console.log(target, typeof target);
-            if(target == 'emotion-btn') {
-                console.log('你点击了..');
-                if (_this.state.open == "inline-block") {
-                    _this.setState({open: "none"});
+            let target = e.target;
+            if(target['id'] == 'emotion-btn') {
+                if (this.state.open == "inline-block") {
+                    this.setState({open: "none"});
                 } else {
-                    _this.setState({open: "inline-block"});
+                    this.setState({open: "inline-block"});
                 }
-            } else if(target !== 'emotions' && target !== 'choose_emotion') {
-                if(_this.state.open == 'inline-block') {
-                    _this.setState({open: 'none'})
+            } else if(target['id'] !== 'emotions' && target['id'] !== 'choose_emotion') {
+                if(this.state.open == 'inline-block') {
+                    this.setState({open: 'none'})
+                }
+            }
+
+            if (target['src'] && this.state.showImg == 'none') {
+                this.setState({showImg: 'inline-block', imgUrl: target['src']});
+            } else {
+                if(this.state.showImg == 'inline-block') {
+                    this.setState({showImg: 'none', imgUrl: ''})
                 }
             }
         })
+    }
+
+    componentWillUnmount() {
+        
     }
 
     insertAtCursor(myValue) {
@@ -162,6 +175,7 @@ class Comment extends Component {
                     />
                     {//<button className="emotion-btn" id="emotion-btn" onClick={ this.emotionBtn.bind(this) } style= {{fontSize: "1.5rem", background: "white", border:"none"}}>😀</button>
                     }
+                    
                     <div className="emotion-c">
                         <div className="emotion-btn" id="emotion-btn" style= {{fontSize: "1.5rem", background: "white", border:"none"}} >
                             😀
@@ -191,6 +205,9 @@ class Comment extends Component {
                 }
                 {
                     this.renderCommentBox(user)
+                }
+                {
+                    <div className="fullImg" style={{display:this.state.showImg}}><img src={this.state.imgUrl}/></div> 
                 }
             </div>
         );

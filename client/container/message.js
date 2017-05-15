@@ -36,6 +36,7 @@ class Message extends Component {
     renderMsg() {
         let msg = this.state.msg;
         if(!msg || !msg instanceof Array) return null;
+        console.log('我的消息', msg);
         let type = '回复了你的'
         return msg.map((v, index) => {
             if(v.type == 'join') {

@@ -5,7 +5,7 @@ class HotCard extends Component {
 
     renderHotCard(type, content) {
         //console.warn('即将要渲染的热门===', content, content instanceof Array, content.length)
-        if(content) {
+        if(content && content instanceof Array) {
             return (
                 content.map((v,index) => {
                     return <div className={`hot-content`} key={`hot-${type}-${index}`}> 

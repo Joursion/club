@@ -23,8 +23,10 @@ exports.updateState = function (username){
     return User.findOneAndUpdate({username: username}, {$set: {state: 1}}).exec();
 };
 
-exports.deleteUser = function (username) {
-    return User.findOneAndRemove({username: username}).exec();
+exports.deleteUser = function (username, cb) {
+    return User.findOneAndRemove({username: username}).exec((err,res) =>{
+        return cb(err, res)
+    });
 };
 
 exports.getUserByEmail = function(email) {

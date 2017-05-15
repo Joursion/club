@@ -100,7 +100,6 @@ class User extends Component{
         }
         let info = this.state.info;
         let publish = this.state.publish;
-        console.log('即将要渲染的个人--', info, publish)
         let reg_date = info.reg_date;
         let date = new Date(reg_date).toLocaleString()
         return (

@@ -75,6 +75,13 @@ class ActivityPage extends Component {
     }
 
     handleJoinActivity(){
+        let {activity} = this.state;
+        if(activity) {
+            if(new Date(activity.end) < new Date(new Date().setHours(0,0,0,0))) {
+                message.warning('该活动已经结束～～～～～')
+                return ;
+            }
+        }
         let id = this.props.params.id;
         let join = this.state.join;
         let joinData = this.state.joinData;
@@ -160,6 +167,7 @@ class ActivityPage extends Component {
     
     handleDel() {
         let id = this.props.params.id;
+
         handle('activity', 'delete', {id}, 'json').then(data =>{
             if(data.err) {
                 message.error('服务器繁忙')
@@ -233,7 +241,7 @@ class ActivityPage extends Component {
                     }
                     <Col xs={24} sm={24} md={24} lg={24} className="join-data">
                     <div className="join-desc">
-                        已经参加的人
+                        已经有 {joinData.length} 个人参加
                         <Button onClick={this.handleJoinActivity} > {this.state.join ? '取消参加' : '我要参加'}</Button>
                     </div>
                     <div className="join-user">

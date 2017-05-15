@@ -27,7 +27,7 @@ exports.incCommentById = function (id) {
     return Activity.findByIdAndUpdate(id, {$inc: {comment: 1}}).exec();
 };
 
-//增加参加人数，在activity　models　中，不进行记录joiner
+//增加参加人数,在activitymodels　中，不进行记录joiner
 exports.incJoinById = function(id) {
     return Activity.findByIdAndUpdate({"_id": id}, {$inc: {join: 1}}).exec();
 };
@@ -37,7 +37,7 @@ exports.subJoinById = function (id) {
 };
 
 exports.getActivityByPage = function (p) {
-    return Activity.find().skip((p - 1) * 10).limit(10).sort('-update_at').exec();
+    return Activity.find().skip((p - 1) * 10).limit(10).sort({start: -1 , end: -1}).exec();
 };
 
 exports.deleteActivity = function (id) {

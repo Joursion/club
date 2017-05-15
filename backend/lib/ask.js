@@ -36,6 +36,6 @@ exports.incCommentById = function (id) {
 };
 
 exports.getUserAsk = function(user) {
-    return Ask.find({creator: user}, {title:true, type: true}).sort('- ').exec()
+    return Ask.find({creator: user}, {title:true, type: true}).sort('-create_at').exec()
 }
 

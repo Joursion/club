@@ -23,10 +23,9 @@ export const selectConfig = [
     //     name: 'life',
     //     value: '生活'
     // }
-    "生活",
     "全部",
-    "学习"
 ]
 
 
 export const apiUrl = 'http://localhost:5000/v1/api/'
+export const socketUrl = 'http://localhost:5000'

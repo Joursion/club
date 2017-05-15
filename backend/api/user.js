@@ -8,33 +8,27 @@ const Tool = require('../tools/index');
 const Mail = require('./mail');
 const Cache = require('../tools/cache')
 
-const initialAvatar = 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTc1j0-QTIkOngZxz3SzNZ4X_RVkiqDz40UKFLHnven0hqsDbmr'
+const initialAvatar = 'http://7xrkb1.com1.z0.glb.clouddn.com/timg.jpeg'
 
 const DAY = 60*60*24
 
 exports.signup = function* () {
     let body = this.request.body;
-    console.log('signup ===', body);
     let username = body.username;
     let password = body.password;
     let checknum = body.checknum;
     let email = body.email
     if (username) {
-        let exist = yield User.getUserByName(username);
-        console.log(exist);
+        let exist = yield User.getUserByName(username); // 判断用户名是否被注册
         if (exist) {
-            //console.warn('用户名已经存在', username) ;
             this.body = { err: "用户名或者邮箱已经被注册" };
         } else {
-            
             let cacheCheckNum = yield Cache.get(`checkNum:${email}`);
-            console.log('验证信息+==', email,cacheCheckNum);
             if(cacheCheckNum !== checknum) {
                 this.body = {
                     err : '验证码无效或已经过期~,请稍后重试'
                 }
             } else {
-                //let tmpPassword = Tool.initHashPassword(username, password);
                 let data = {
                     email: email,
                     password : Tool.initHashPassword(username, password),
@@ -161,17 +155,13 @@ exports.getCheckNum = function*() {
 }
 
 exports.check = function*() {
-    let cookie = this.request.headers.cookie;
-    if(cookie) {
-        let tmpCookie = cookie.split('=');
-        let token = tmpCookie[1];
+    let tmpCookie = this.request.headers.cookie;
+    if(tmpCookie) {
+        let token = Tool.getCookie(tmpCookie, 'user');
         if(token) {
             let user = yield Cache.get(`token:${token}`);
             let avatar = yield Cache.get(`avatar:${user}`)
-            console.log('有headder', cookie, user);
             if(user) {
-                //let userInfo = User.getUserByName(data);
-                //let username = 'yyyyyy'
                 this.body = {
                     data: {
                         username: user,
@@ -179,7 +169,11 @@ exports.check = function*() {
                     }
                 }
             }
-        } 
+        } else {
+            this.body = {
+                err: '服务器繁忙±'
+            }
+        }
     } else {
         this.body = {
             err: 'no headers'
@@ -219,20 +213,19 @@ exports.getUser = function*(){
         pActivity[i].type = 'activity'
     }
     let pItem = yield Item.getUserItem(user);
+    
     for(let i in pItem) {
         pItem[i].type = 'item'
     }
     let pAsk = yield Ask.getUserAsk(user);
+    
     for(let i in pAsk) {
         pAsk[i].type = 'ask'
     }
-    console.warn(pActivity, pItem, pAsk)
     totalPublish = totalPublish.concat(pActivity);
     totalPublish = totalPublish.concat(pItem);
     totalPublish = totalPublish.concat(pAsk);
     
-    console.log('一共的发布--', totalPublish);
-    //for(let v of pActivity)
 
     this.body = {
         data :{
@@ -241,4 +234,9 @@ exports.getUser = function*(){
         }
     }
 }
-
+function delUser(options,cb) {
+    let {mail, username} = options
+    User.deleteUserByMail(mail,cb)
+    User.deleteUserByUsername(username, cb)
+}
+exports.delUser = delUser

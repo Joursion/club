@@ -35,16 +35,13 @@ function scriperJob () {
                     let t = $(this).children()
                     t.each(function() {
                         tmpData.id = $(this).attr('href');
-                        //console.log('tttt', tmpData.title, '+++',title, '+++',$(this).text())
                         tmpData.title = title + $(this).text();
-                        // let tttt = test(tmpData, title, $(this).text(), $(this).attr('href'))
                         let data = _.cloneDeep(tmpData);
                         jobData.push(data);
                         tmpData.title = title;
                     })
                 })
             })
-            // console.log('=====', jobData);
             return resolve(JSON.stringify(jobData));
         }).catch((err) => {
             console.error('err',err)

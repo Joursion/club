@@ -80,8 +80,8 @@ class CreateActivity extends Component {
     render() {
         let content = ""
         return (
-            <div>
-            <Col xs={24} sm={24} md={18} lg={18} className="animated fadeInDown create">
+            <div className="createBox">
+            <Col xs={20} sm={20} md={18} lg={18} className="animated fadeInDown create">
                 <Input size="large" placeholder="请输入活动的标题~~" ref='title' className="input-title"/>
 
                 <div style={{marginTop: 10}}>

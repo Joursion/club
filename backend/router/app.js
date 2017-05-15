@@ -16,7 +16,10 @@ const Cache = require('../tools/cache');
 const Auth = require('../middlewares/auth');
 
 module.exports = function (app, router) {
-
+    router.get('/', function*() {
+         this.body = 'hello world';
+         
+    })
     /**upload */
     router.post('/v1/api/upload', Upload.upload)
 
@@ -79,5 +82,7 @@ module.exports = function (app, router) {
     router.del('/v1/api/message', Auth.userCheck, Msg.delMessage)
     
 
-    app.use(router.routes()).use(router.allowedMethods());
+    app
+  .use(router.routes())
+  .use(router.allowedMethods());
 }

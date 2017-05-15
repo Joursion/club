@@ -47,7 +47,7 @@ ReactDOM.render(
                 <Route path = "signin" component = { Signin } />
                 <Route path = 'signup' component = {Signup} />
                 <Route path = "ask" component = { Ask }/>
-                //<Route path = "id" component = { User } />
+                {/*//<Route path = "id" component = { User } />*/}
                 <Route path = '/item/:id' component = {ItemPage} />
                 <Route path = '/activity/:id' component = {ActivityPage} />
                 <Route path = '/ask/:id' component = {AskPage} />

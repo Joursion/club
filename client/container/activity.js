@@ -45,7 +45,6 @@ class Activity extends Component {
         handle(`activity/p/${page}`, 'get', [], 'json').then(data =>{
             if(!data.err) {
                 if(data instanceof Array && data.length >= numPerPage){
-                    console.log('还有下一页');
                     this.setState({hasNext:true, page: page})
                 } else {
                     this.setState({hasNext: false})
@@ -95,7 +94,9 @@ class Activity extends Component {
                             <div className="activity-info">
                             <Icon type="user" />&nbsp;{v.join} &nbsp;<Icon type="message" /> &nbsp;{v.comment} &nbsp;<Icon type="eye-o" />&nbsp; {v.pv}
                             </div>
-                            <div className="activity-date">活动时间：&nbsp;{start} -- {end}</div>
+                            {
+                                new Date(v.end) < new Date(new Date().setHours(0,0,0,0)) ? <div className="activity-date-end">活动已结束！</div> : <div className="activity-date">活动时间：&nbsp;{start} -- {end}</div>
+                            }
                         </div>
                     </div>
                     </Link>

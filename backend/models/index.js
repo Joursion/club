@@ -17,7 +17,7 @@ mongoose.connect(mongodbUrl.url, function (err) {
 exports.User = require('./user');
 exports.Item = require('./item');
 exports.Activity = require('./activity');
-// exports.ActivityCommnet = require('./activity_comment');
+// exports.ActivityCommnet = req/zzuire('./activity_comment');
 exports.Join = require('./join');
 // exports.GoodComment = require('./good_comment');
 // exports.Star = require('./star');

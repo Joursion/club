@@ -12,8 +12,6 @@ module.exports = (function () {
     config.config = process.env.CLUB_VERSION == 'dev'?  _.extend(config, configDev) : 
                     _.extend(config, configProduct);
 
-
-
     console.warn(config)
     return config;
 })();

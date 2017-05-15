@@ -5,7 +5,7 @@
 /client/node_modules/
 /backend/tmp/
 
-# config data
+# backend config data
 /backend/config/config.js
 
 # map after
@@ -14,6 +14,9 @@
 # other
 bundle.js
 
+# css style
+/client/antd.css
+/client/style/style.scss
 
 # Optional npm cache directory
 .npm

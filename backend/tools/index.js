@@ -32,8 +32,24 @@ exports.initCheckNum = function() {
     let data = '';
     let length = CHECK_NUM.length;
     for(let i = 0; i < 6; i ++ ){
-        let num = Math.floor(Math.random()*62);
+        let num = Math.floor(Math.random()*length);
         data += CHECK_NUM[num]; 
     }
     return data;
 }
+
+function getCookie(cookie, name) {
+    //let reg = new RegExp(name + '=[a-zA-Z]+\|[a-zA-Z0-9]+')
+    let reg = new RegExp(/user=[a-zA-Z]+\|[a-zA-Z0-9]+/g);
+    console.log(cookie, name, reg)
+    if(typeof cookie === 'string') {
+        let res = cookie.match(reg, '$1')
+        console.log(res)
+        if(res) {
+            return res[0].split("=")[1] 
+        }
+        return null
+    }
+    return null
+}
+exports.getCookie = getCookie

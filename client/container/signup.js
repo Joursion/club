@@ -143,13 +143,10 @@ class Signup extends Component {
         let rpassword = this.refs.rpassword.refs.input.value;
         let email = this.refs.email.refs.input.value;
         let checknum = this.refs.checknum.refs.input.value;
-        console.log('==', username,password, rpassword, email, checknum);
         if(this.validCheck(username, password, rpassword, email, checknum)) {
-            console.log('check success');
             handle('signup', 'POST', {username, password, email, checknum}, 'json').then(data =>{
                 if(!data.err) {
-                    console.log('我注册收到的消息',data);
-                    this.props.history.push(`/item`);
+                    this.props.history.push(`/signin`);
                 } else {
                     message.error(data.err)
                 }
